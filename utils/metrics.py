@@ -204,7 +204,7 @@ class ConfusionMatrix:
                 annot=nc < 30,
                 annot_kws={"size": 8},
                 cmap="Blues",
-                fmt=".2f",
+                fmt=".2f" if normalize else ".0f",
                 square=True,
                 vmin=0.0,
                 xticklabels=ticklabels,
@@ -213,7 +213,7 @@ class ConfusionMatrix:
         ax.set_xlabel("True")
         ax.set_ylabel("Predicted")
         ax.set_title("Confusion Matrix")
-        fig.savefig(Path(save_dir) / "confusion_matrix.png", dpi=250)
+        fig.savefig(Path(save_dir) / "confusion_matrix_normalized.png" if normalize else Path(save_dir) / "confusion_matrix.png", dpi=250)
         plt.close(fig)
 
     def print(self):
