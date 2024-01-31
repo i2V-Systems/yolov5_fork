@@ -14,6 +14,11 @@ from utils.loggers.wandb.wandb_utils import WandbLogger
 from utils.plots import plot_images, plot_labels, plot_results
 from utils.torch_utils import de_parallel
 
+import sys
+sys.path.append("../../yolov5_training/")
+from utilsv5 import get_arguments
+import mlflowutils
+
 LOGGERS = ("csv", "tb", "wandb", "clearml", "comet")  # *.csv, TensorBoard, Weights & Biases, ClearML
 RANK = int(os.getenv("RANK", -1))
 
@@ -147,7 +152,10 @@ class Loggers:
 
         else:
             self.comet_logger = None
-
+            
+        self.train_opts = get_arguments(os.environ["train_json_path"])
+        self.mlflow_logging = self.train_opts.mlflow_logging
+            
     @property
     def remote_dataset(self):
         # Get data_dict if custom dataset artifact link is provided
@@ -164,10 +172,14 @@ class Loggers:
     def on_train_start(self):
         if self.comet_logger:
             self.comet_logger.on_train_start()
+        if self.mlflow_logging:
+            mlflowutils.on_train_start(self.train_opts)
 
     def on_pretrain_routine_start(self):
         if self.comet_logger:
             self.comet_logger.on_pretrain_routine_start()
+        if self.mlflow_logging:
+            mlflowutils.on_pretrain_routine_start()
 
     def on_pretrain_routine_end(self, labels, names):
         # Callback runs on pre-train routine end
@@ -275,6 +287,9 @@ class Loggers:
 
         if self.comet_logger:
             self.comet_logger.on_fit_epoch_end(x, epoch=epoch)
+        
+        if self.mlflow_logging:
+            mlflowutils.on_fit_epoch_end(x, epoch=epoch)
 
     def on_model_save(self, last, epoch, final_epoch, best_fitness, fi):
         # Callback runs on model save event
@@ -324,6 +339,10 @@ class Loggers:
         if self.comet_logger:
             final_results = dict(zip(self.keys[3:10], results))
             self.comet_logger.on_train_end(files, self.save_dir, last, best, epoch, final_results)
+        
+        if self.mlflow_logging:
+            final_results = dict(zip(self.keys[3:10], results))
+            mlflowutils.on_train_end(self.save_dir, last, best, epoch, final_results, self.train_opts)
 
     def on_params_update(self, params: dict):
         # Update hyperparams or configs of the experiment

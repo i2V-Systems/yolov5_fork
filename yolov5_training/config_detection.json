@@ -1,0 +1,65 @@
+{
+    "model_parameters": {
+        "task": "detect",
+        "model_path": "yolov5n.yaml", 
+        "data_path": "/media/i2v-admin/2tb_drive/Raushan/Face_Detection/datasets/fddb/yolo/dataset.yaml",
+        "epochs": 1,
+        "patience": 0,
+        "image_size": 416,
+        "batch_size": 64,
+        "device": "0",
+        "project_name": "Face_Detection-yolov5",
+        "exp_name": "yolov5n-exp-3-rotation90-416-tmp",
+        "custom_augmentation": true,
+
+        "nosave": false,
+        "save_period": -1,
+        "cache": false,
+        "workers": 8,
+        "exist_ok": false,
+        "pretrained": "/home/i2v-admin/Documents/Raushan/ultralytics/yolov5/runs/train/yolov5n-exp-2-rotation90-416/weights/best.pt",
+        "optimizer": "SGD",
+        "verbose": false,
+        "seed": 0,
+        "deterministic": true,
+        "single_cls": false,
+        "rect": false,
+        "cos_lr": false,
+        "close_mosaic": 0,
+        "resume": false,
+        "amp": true,
+        "fraction": 1,
+        "profile": false,
+        "dfl": 1.5,
+        "pose": 12,
+        "kobj": 2,
+        "label_smoothing": 0,
+        "nbs": 64,
+        "overlap_mask": true,
+        "mask_ratio": 4,
+        "dropout": 0.1,
+        "noval": false,
+        "multi_scale": false,
+        "cfg":"",
+        "evolve":null,
+        "freeze":[0],
+        "noplots":false,
+        "sync_bn":false,
+        "image_weights":false,
+        "quad":false,
+        "noautoanchor":false
+
+    },
+    "logging_parameters": {
+        "mlflow_logging": true,
+        "mlflow_logging_url": "http://192.168.1.21:8000"
+    },
+    "augmentation_parameters": {
+        "default_augmentation_parameters": {
+            "hyp":"../data/hyps/hyp.scratch-low.yaml"
+        },
+        "custom_augmentation_parameters": {
+            "hyp":"../data/hyps/hyp.scratch-custom.yaml"
+        }
+    }
+}

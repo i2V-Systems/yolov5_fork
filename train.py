@@ -822,11 +822,20 @@ def generate_individual(input_ranges, individual_length):
     return individual
 
 
+# def run(**kwargs):
+#     # Usage: import train; train.run(data='coco128.yaml', imgsz=320, weights='yolov5m.pt')
+#     opt = parse_opt(True)
+#     for k, v in kwargs.items():
+#         setattr(opt, k, v)
+#     main(opt)
+#     return opt
+
 def run(**kwargs):
-    # Usage: import train; train.run(data='coco128.yaml', imgsz=320, weights='yolov5m.pt')
-    opt = parse_opt(True)
+    # Usage: This function will be called by trainv5.py file
+    parser = argparse.ArgumentParser()
+    opt = parser.parse_args()
     for k, v in kwargs.items():
-        setattr(opt, k, v)
+        setattr(opt, k, v) 
     main(opt)
     return opt
 
